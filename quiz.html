@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IEEE Sensors Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>IEEE Sensors Council - Technical Quiz</h1>
+
+      
+
+<form id="quizForm">
+
+    <div class="participant">
+        <label>Name:</label><br>
+        <input type="text" id="name"><br><br>
+
+        <label>USN:</label><br>
+        <input type="text" id="usn"><br><br>
+    </div>
+
+    <div id="questionContainer"></div>
+
+    <button type="button" onclick="nextQuestion()">Next</button>
+
+</form>
+
+        <div id="result"></div>
+
+    </div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+// 🔴 Replace these values with YOUR actual config values
+const firebaseConfig = {
+  apiKey: "AIzaSyDhvN3PMl8ZGWBiQivAbGvxfbOMf5nw7-I",
+  authDomain: "ieee-sensors-quiz.firebaseapp.com",
+  projectId: "ieee-sensors-quiz",
+  storageBucket: "ieee-sensors-quiz.firebasestorage.app",
+  messagingSenderId: "320575452669",
+  appId: "1:320575452669:web:59d5109f07642e9a801594"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Make database functions globally accessible
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

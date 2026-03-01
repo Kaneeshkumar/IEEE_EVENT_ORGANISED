@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Top 10 Leaderboard</h1>
+    <div id="leaderboard"></div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, query, orderBy, limit, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "ieee-sensors-quiz.firebaseapp.com",
+  projectId: "ieee-sensors-quiz",
+  storageBucket: "ieee-sensors-quiz.firebasestorage.app",
+  messagingSenderId: "320575452669",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadLeaderboard() {
+
+    const q = query(
+        collection(db, "quizResults"),
+        orderBy("score", "desc"),
+        limit(10)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+   let output = "<h2>🏆 Congratulations to our Top Performers! 🏆</h2>";
+output += "<table style='width:100%; text-align:left; border-collapse: collapse;'>";
+    let rank = 1;
+
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+let rowStyle = "";
+
+if (rank === 1) {
+    rowStyle = "background: gold; font-weight:bold;";
+} else if (rank === 2) {
+    rowStyle = "background: silver; font-weight:bold;";
+} else if (rank === 3) {
+    rowStyle = "background: #cd7f32; color:white; font-weight:bold;";
+}
+
+output += `
+<tr style="${rowStyle}">
+    <td>${rank}</td>
+    <td>${data.name}</td>
+    <td>${data.score}</td>
+</tr>
+`;
+
+        rank++;
+    });
+
+    output += "</table>";
+
+    document.getElementById("leaderboard").innerHTML = output;
+}
+
+loadLeaderboard();
+
+</script>
+
+</body>
+</html>
